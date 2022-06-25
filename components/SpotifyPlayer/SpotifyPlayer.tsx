@@ -1,4 +1,5 @@
 import { Box, Button, Container, Image } from "@chakra-ui/react";
+import ArtistEligible from "components/Modals/ArtistEligible";
 import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
@@ -13,12 +14,14 @@ declare global {
 export const SpotifyPlayer = () => {
   const [playerLoaded, setPlayerLoaded] = useState<boolean>(false);
   const [token, setToken] = useState<string | null>(null);
-  const [handlePlay, setHandlePlay] = useState<any>();
   const [currentState, setCurrentState] = useState<any>();
   const [playerError, setPlayerError] = useState<any>();
   console.log(currentState);
   const trackWindow = currentState?.track_window;
   console.log(trackWindow);
+  const [validArtist, setValidArtist] = useState<boolean>(false);
+
+  const artist = currentState?.track_window?.current_track?.artists[0];
 
   useEffect(() => {
     (async () => {
@@ -28,6 +31,19 @@ export const SpotifyPlayer = () => {
   }, []);
 
   useEffect(() => {
+    const checkArtistLinked = async (id: string) => {
+      const isValid = true;
+      setValidArtist(isValid);
+    };
+    if (artist) {
+      const uriParts = artist.uri.split(":");
+      checkArtistLinked(uriParts[2]);
+    } else {
+      setValidArtist(false);
+    }
+  }, [artist]);
+
+  useEffect(() => {
     if (token) {
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new window.Spotify.Player({
@@ -35,7 +51,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5
+          volume: 0.5,
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -66,17 +82,11 @@ export const SpotifyPlayer = () => {
   }, [token]);
 
   const handleError = (res: any) => {
+    console.log("Oh no! Error during playback: ", res.message);
     setPlayerError(res.message);
   };
 
   const handleStateChange = (state: any) => {
-    console.log(state);
-    const {
-      position,
-      duration,
-      track_window: { current_track }
-    } = state || { track_window: {} };
-
     setCurrentState({ ...state });
   };
 
@@ -106,7 +116,6 @@ export const SpotifyPlayer = () => {
           <br />
           {trackWindow?.current_track.artists[0].name}
 
-          {}
           <Box display="flex" alignItems="center" marginTop="10">
             <Button onClick={handlePrevious} disabled={!playerLoaded}>
               {`<<`}
@@ -118,6 +127,7 @@ export const SpotifyPlayer = () => {
               {`>>`}
             </Button>
           </Box>
+          {validArtist && <ArtistEligible />}
         </Container>
       </div>
     </>

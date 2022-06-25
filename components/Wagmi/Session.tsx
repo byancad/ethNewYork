@@ -14,7 +14,13 @@ export const Session = () => {
   const { data: accountData } = useAccount();
   const { activeChain } = useNetwork();
   const { data: signer } = useSigner();
-  const { setWagmiUser } = useUserContext();
+  const { setWagmiUser, clearWagmiUser } = useUserContext();
+
+  const handleDisconnect = () => {
+    clearWagmiUser();
+    disconnect();
+  };
+
   useEffect(() => {
     const wagmiData = {
       signer,
@@ -22,7 +28,7 @@ export const Session = () => {
       chainID: activeChain?.id,
       connect,
       connectors,
-      disconnect,
+      disconnect: handleDisconnect,
     };
     setWagmiUser(wagmiData);
   }, [signer, accountData, activeChain, connect, connectors, disconnect]);
