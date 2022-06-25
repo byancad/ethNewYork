@@ -14,7 +14,7 @@ export const Session = () => {
   const { data: accountData } = useAccount();
   const { activeChain } = useNetwork();
   const { data: signer } = useSigner();
-  const { setWagmiUser, wagmi } = useUserContext();
+  const { setWagmiUser } = useUserContext();
   useEffect(() => {
     const wagmiData = {
       signer,
