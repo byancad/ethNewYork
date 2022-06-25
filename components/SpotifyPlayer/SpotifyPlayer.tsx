@@ -17,6 +17,8 @@ export const SpotifyPlayer = () => {
   const [currentState, setCurrentState] = useState<any>();
   const [playerError, setPlayerError] = useState<any>();
   console.log(currentState);
+  const trackWindow = currentState?.track_window;
+  console.log(trackWindow);
 
   useEffect(() => {
     (async () => {
@@ -26,7 +28,6 @@ export const SpotifyPlayer = () => {
   }, []);
 
   useEffect(() => {
-<<<<<<< HEAD
     if (token) {
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new window.Spotify.Player({
@@ -34,7 +35,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5,
+          volume: 0.5
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -67,71 +68,13 @@ export const SpotifyPlayer = () => {
   const handleError = (res: any) => {
     setPlayerError(res.message);
   };
-=======
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new window.Spotify.Player({
-        name: "Spotify Web Player",
-        getOAuthToken: (cb: any) => {
-          cb(TEMP_SPOTIFY_TOKEN);
-        }
-      });
-      initializePlayer(player);
-    };
-  }, [token]);
-
-  const initializePlayer = (player: any) => {
-    player.addListener("initialization_error", (res: any) =>
-      console.error(res.message)
-    );
-    player.addListener("authentication_error", (res: any) =>
-      console.error(res.message)
-    );
-    player.addListener("account_error", (res: any) =>
-      console.error(res.message)
-    );
-    player.addListener("playback_error", (res: any) =>
-      console.error(res.message)
-    );
-    player.addListener("player_state_changed", (state: any) => {
-      console.log(state);
-      const {
-        position,
-        duration,
-        track_window: { current_track }
-      } = state || { track_window: {} };
-
-      console.log({ state });
-
-      console.log("Currently Playing", current_track);
-      console.log("Position in Song", position);
-      console.log("Duration of Song", duration);
-    });
-
-    player.addListener("ready", (p: any) =>
-      console.log("Ready with Device ID", p.device_id)
-    );
-    player.addListener("not_ready", (p: any) =>
-      console.log("Device ID has gone offline", p.device_id)
-    );
-    player.connect().then((success: any) => {
-      if (success) setPlayerLoaded(true);
-    });
-
-    player.setName("8trac").then(() => {
-      console.log("Player name updated!");
-    });
-
-    player.pause().then(() => {
-      console.log("Paused!");
-    });
->>>>>>> add dark mode
 
   const handleStateChange = (state: any) => {
     console.log(state);
     const {
       position,
       duration,
-      track_window: { current_track },
+      track_window: { current_track }
     } = state || { track_window: {} };
 
     setCurrentState({ ...state });
@@ -157,8 +100,13 @@ export const SpotifyPlayer = () => {
       <div>
         <Container centerContent marginTop="40">
           <Box alignItems="center" maxW="sm">
-            <Image src="/spaceyjane.jpeg" />
+            <Image src={trackWindow?.current_track.album.images[2].url} />
           </Box>
+          {trackWindow?.current_track.name}
+          <br />
+          {trackWindow?.current_track.artists[0].name}
+
+          {}
           <Box display="flex" alignItems="center" marginTop="10">
             <Button onClick={handlePrevious} disabled={!playerLoaded}>
               {`<<`}
