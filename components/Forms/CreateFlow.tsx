@@ -15,12 +15,12 @@ const createNewFlow = async (
   flowRate: string,
   signer: Signer
 ) => {
-  const address = await signer.getAddress();
+  const signerAddress = await signer.getAddress();
   const sf = await Framework.create({
     chainId: 5,
     provider: customHttpProvider,
     customSubgraphQueriesEndpoint:
-      "https://thegraph.com/hosted-service/subgraph/superfluid-finance/protocol-v1-xdai",
+      "https://thegraph.com/hosted-service/subgraph/superfluid-finance/protocol-v1-goerli",
     resolverAddress: "0x3710AB3fDE2B61736B8BB0CE845D6c61F667a78E",
   });
 
@@ -40,7 +40,7 @@ const createNewFlow = async (
     View Your Stream At: https://app.superfluid.finance/dashboard/${recipient}
     Network: Goerli
     Super Token: ETHx
-    Sender: ${address}
+    Sender: ${signerAddress}
     Receiver: ${recipient},
     FlowRate: ${flowRate}
     `
