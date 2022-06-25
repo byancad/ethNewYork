@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button, Container, Image } from "@chakra-ui/react";
 import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
@@ -26,6 +26,7 @@ export const SpotifyPlayer = () => {
   }, []);
 
   useEffect(() => {
+<<<<<<< HEAD
     if (token) {
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new window.Spotify.Player({
@@ -66,6 +67,64 @@ export const SpotifyPlayer = () => {
   const handleError = (res: any) => {
     setPlayerError(res.message);
   };
+=======
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      const player = new window.Spotify.Player({
+        name: "Spotify Web Player",
+        getOAuthToken: (cb: any) => {
+          cb(TEMP_SPOTIFY_TOKEN);
+        }
+      });
+      initializePlayer(player);
+    };
+  }, [token]);
+
+  const initializePlayer = (player: any) => {
+    player.addListener("initialization_error", (res: any) =>
+      console.error(res.message)
+    );
+    player.addListener("authentication_error", (res: any) =>
+      console.error(res.message)
+    );
+    player.addListener("account_error", (res: any) =>
+      console.error(res.message)
+    );
+    player.addListener("playback_error", (res: any) =>
+      console.error(res.message)
+    );
+    player.addListener("player_state_changed", (state: any) => {
+      console.log(state);
+      const {
+        position,
+        duration,
+        track_window: { current_track }
+      } = state || { track_window: {} };
+
+      console.log({ state });
+
+      console.log("Currently Playing", current_track);
+      console.log("Position in Song", position);
+      console.log("Duration of Song", duration);
+    });
+
+    player.addListener("ready", (p: any) =>
+      console.log("Ready with Device ID", p.device_id)
+    );
+    player.addListener("not_ready", (p: any) =>
+      console.log("Device ID has gone offline", p.device_id)
+    );
+    player.connect().then((success: any) => {
+      if (success) setPlayerLoaded(true);
+    });
+
+    player.setName("8trac").then(() => {
+      console.log("Player name updated!");
+    });
+
+    player.pause().then(() => {
+      console.log("Paused!");
+    });
+>>>>>>> add dark mode
 
   const handleStateChange = (state: any) => {
     console.log(state);
@@ -96,15 +155,22 @@ export const SpotifyPlayer = () => {
   return (
     <>
       <div>
-        <Button onClick={handlePrevious} disabled={!playerLoaded}>
-          {`<<`}
-        </Button>
-        <Button onClick={handleTogglePlay} disabled={!playerLoaded}>
-          Play
-        </Button>
-        <Button onClick={handleNext} disabled={!playerLoaded}>
-          {`>>`}
-        </Button>
+        <Container centerContent marginTop="40">
+          <Box alignItems="center" maxW="sm">
+            <Image src="/spaceyjane.jpeg" />
+          </Box>
+          <Box display="flex" alignItems="center" marginTop="10">
+            <Button onClick={handlePrevious} disabled={!playerLoaded}>
+              {`<<`}
+            </Button>
+            <Button onClick={handleTogglePlay} disabled={!playerLoaded}>
+              Play
+            </Button>
+            <Button onClick={handleNext} disabled={!playerLoaded}>
+              {`>>`}
+            </Button>
+          </Box>
+        </Container>
       </div>
     </>
   );
