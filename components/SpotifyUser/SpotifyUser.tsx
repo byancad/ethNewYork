@@ -7,9 +7,15 @@ export const SpotifyUser: FC<WrapperProps> = ({ children }) => {
   const { setSpotifyUser } = useUserContext();
   useEffect(() => {
     const getSpotifyData = async () => {
-      const token = await getAccessToken();
-      const res = await serverRequest().get("/api/spotify/user?token=" + token);
-      setSpotifyUser(res.data);
+      try {
+        const token = await getAccessToken();
+        const res = await serverRequest().get(
+          "/api/spotify/user?token=" + token
+        );
+        setSpotifyUser(res.data);
+      } catch (e) {
+        console.log("fetch spotify user failed");
+      }
     };
     getSpotifyData();
   }, []);
