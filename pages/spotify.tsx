@@ -12,6 +12,7 @@ const Spotify: NextPage = () => {
       const res = await serverRequest().get(
         `api/spotify/access-token?code=${code}&state=${state}`
       );
+      console.log(res.data);
       const { access_token, refresh_token } = res.data;
 
       setAccessToken(access_token);

@@ -18,3 +18,7 @@ type PayloadActionMap<M extends { [index: string]: any }> = {
         payload: M[Key];
       };
 };
+
+type WrapperProps = {
+  children: JSX.Element | JSX.Element[];
+};

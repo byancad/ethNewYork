@@ -8,8 +8,20 @@ import styles from "../styles/Home.module.css";
 import { serverRequest } from "../configs/axios";
 import Link from "next/link";
 import { Button } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { getAccessToken } from "utils/localStorage";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const accessToken = await getAccessToken();
+      console.log(accessToken);
+      setToken(accessToken);
+    })();
+  }, []);
   return (
     <div className={styles.container}>
       <Head>
@@ -19,9 +31,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1 className={styles.title}>Welcome to 8trac</h1>
 
         <div>
           <CreateFlow />
@@ -32,43 +42,26 @@ const Home: NextPage = () => {
         </div>
 
         <div>
-          <Link
-            href={`${process.env.SPOTIFY_BASE_URL}authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.API_BASE_URL}spotify&state=ahgjtirutyghdjke&scope=user-read-private user-read-email`}
-          >
-            <Button mt={4} colorScheme="teal">
-              Connect Spotify
-            </Button>
-          </Link>
+          {token ? (
+            <Link href={"player"}>
+              <Button mt={4} colorScheme="teal">
+                Go to Player
+              </Button>
+            </Link>
+          ) : (
+            <Link
+              href={`${process.env.SPOTIFY_BASE_URL}authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.API_BASE_URL}spotify&state=ahgjtirutyghdjke&scope=user-read-private user-read-email`}
+            >
+              <Button mt={4} colorScheme="teal">
+                Connect Spotify
+              </Button>
+            </Link>
+          )}
         </div>
         <p className={styles.description}>
           Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
       </main>
 
       <footer className={styles.footer}>

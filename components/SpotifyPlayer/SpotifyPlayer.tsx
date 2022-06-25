@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
 
@@ -5,11 +6,13 @@ declare global {
   interface Window {
     onSpotifyWebPlaybackSDKReady: Function;
     Spotify: any;
+    playr: any;
   }
 }
 export const SpotifyPlayer = () => {
   const [playerLoaded, setPlayerLoaded] = useState<boolean>(false);
   const [token, setToken] = useState<string | null>(null);
+  const [handlePlay, setHandlePlay] = useState<any>();
 
   useEffect(() => {
     (async () => {
@@ -90,6 +93,14 @@ export const SpotifyPlayer = () => {
     //     player.togglePlay();
     //   };
     // }
+    // setHandlePlay(player.togglePlay);
+
+    window.playr = player;
+  };
+
+  const handleClick = async () => {
+    console.log("doing stuff");
+    window.playr.togglePlay();
   };
 
   return (
@@ -97,6 +108,10 @@ export const SpotifyPlayer = () => {
       <div>
         <div>Player</div>
         {token && <div>Player Ready: {playerLoaded.toString()}</div>}
+
+        <Button onClick={handleClick} disabled={!playerLoaded}>
+          Play
+        </Button>
       </div>
     </>
   );
