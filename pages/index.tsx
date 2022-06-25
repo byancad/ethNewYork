@@ -31,16 +31,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to 8trac</h1>
-
-        <div>
-          <CreateFlow />
-        </div>
-
-        <div>
-          <DeleteFlow />
-        </div>
-        <ConnectWallet />
-
+        <p className={styles.description}>A Music $treaming Platform</p>
         <div>
           {token ? (
             <Link href={"player"}>
@@ -58,10 +49,6 @@ const Home: NextPage = () => {
             </Link>
           )}
         </div>
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
       </main>
 
       <footer className={styles.footer}>
