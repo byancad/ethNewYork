@@ -5,10 +5,12 @@ import { Wagmi } from "components/Wagmi/Wagmi";
 import { WagmiConfig } from "wagmi";
 import { client } from "configs/wagmi";
 import { ChakraProvider } from "@chakra-ui/react";
+import { SpotifyUser } from "components/SpotifyUser/SpotifyUser";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider>
+      <SpotifyUser>
       <WagmiConfig client={client}>
         <Wagmi>
           <ChakraProvider>
@@ -16,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </ChakraProvider>
         </Wagmi>
       </WagmiConfig>
+      </SpotifyUser>
     </Provider>
   );
 }

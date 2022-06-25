@@ -11,6 +11,7 @@ import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
 import { useRouter } from "next/router";
+import { SpotifyUser } from "components/SpotifyUser/SpotifyUser";
 
 const Home: NextPage = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -40,7 +41,10 @@ const Home: NextPage = () => {
         <div>
           <DeleteFlow />
         </div>
-
+        <div>
+   
+        </div>
+     
         <div>
           {token ? (
             <Link href={"player"}>
