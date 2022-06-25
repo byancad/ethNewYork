@@ -4,6 +4,9 @@ import Head from "next/head";
 import Image from "next/image";
 import { CreateFlow } from "../components/Forms/CreateFlow";
 import styles from "../styles/Home.module.css";
+import { serverRequest } from '../configs/axios';
+import Link from "next/link";
+import { Button } from "@chakra-ui/react";
 
 const Home: NextPage = () => {
   return (
@@ -27,16 +30,28 @@ const Home: NextPage = () => {
           <DeleteFlow />
         </div>
 
+      <div>
+    
+        <Link href={`${process.env.SPOTIFY_BASE_URL}authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.API_BASE_URL}spotify&state=ahgjtirutyghdjke&scope=user-read-private user-read-email`
+}>
+  
+  <Button
+   mt={4}
+   colorScheme="teal">Connect Spotify</Button>
+</Link>
+           
+          
+      
+     
+      </div>
         <p className={styles.description}>
           Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+          
+          
 
           <a href="https://nextjs.org/learn" className={styles.card}>
             <h2>Learn &rarr;</h2>
