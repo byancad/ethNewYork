@@ -9,22 +9,37 @@ import {
   ModalFooter,
   VStack,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 
-const ArtistEligible = () => {
+type ArtistEligibleProps = {
+  handleTogglePlay: () => void;
+  setUserDenied: (flag: boolean) => void;
+  setWantsToStream: (flag: boolean) => void;
+};
+
+const ArtistEligible = ({
+  handleTogglePlay,
+  setUserDenied,
+  setWantsToStream,
+}: ArtistEligibleProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  useEffect(() => onOpen(), []);
+
+  const handleMaybeLater = async () => {
+    setUserDenied(true);
+    await handleTogglePlay();
+    onClose();
+  };
+
+  const handleHellYeah = async () => {
+    setWantsToStream(true);
+  };
 
   return (
     <>
-      {/* <Button
-        _focus={{ boxShadow: "none" }}
-        bgGradient="linear(to-l, #7928CA, #FF0080)"
-        onClick={onOpen}
-      >
-        Notice
-      </Button> */}
       <Modal
         isCentered
-        isOpen={true}
+        isOpen={isOpen}
         onClose={onClose}
         motionPreset="slideInBottom"
       >
@@ -48,7 +63,7 @@ const ArtistEligible = () => {
                 height={16}
                 _focus={{ boxShadow: "none" }}
                 bgGradient="linear(to-l, #7928CA, #FF0080)"
-                onClick={onOpen}
+                onClick={handleHellYeah}
               >
                 Hell yeah!
               </Button>
@@ -56,7 +71,7 @@ const ArtistEligible = () => {
                 width="100%"
                 height={16}
                 _focus={{ boxShadow: "none" }}
-                onClick={onOpen}
+                onClick={handleMaybeLater}
               >
                 Maybe Later
               </Button>

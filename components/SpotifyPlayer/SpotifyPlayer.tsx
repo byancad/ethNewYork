@@ -1,6 +1,9 @@
 import { Box, Button, Container, Image } from "@chakra-ui/react";
 import ArtistEligible from "components/Modals/ArtistEligible";
+import ConnectWallet from "components/Modals/ConnectWallet";
+import SetFlowRate from "components/Modals/SetFlowRate";
 import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
+import useUserContext from "hooks/useUserContext";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
 
@@ -16,10 +19,36 @@ export const SpotifyPlayer = () => {
   const [token, setToken] = useState<string | null>(null);
   const [currentState, setCurrentState] = useState<any>();
   const [playerError, setPlayerError] = useState<any>();
-  console.log(currentState);
   const trackWindow = currentState?.track_window;
-  console.log(trackWindow);
+
+  // vars for modals
   const [validArtist, setValidArtist] = useState<boolean>(false);
+  const [rateSet, setRateSet] = useState<boolean>(false);
+  const [userDenied, setUserDenied] = useState<boolean>(false);
+  const [wantsToStream, setWantsToStream] = useState<boolean>(false);
+  const { wagmi } = useUserContext();
+  const userAddress = wagmi?.address;
+  console.log(wagmi);
+
+  const showValidArtistModal = validArtist && !userDenied && !wantsToStream;
+
+  const showConnectModal =
+    validArtist && !userDenied && wantsToStream && !userAddress;
+
+  const showSetFlowModal =
+    validArtist && !userDenied && wantsToStream && userAddress && !rateSet;
+
+  const showStartFlow =
+    validArtist && !userDenied && wantsToStream && userAddress && rateSet;
+
+  useEffect(() => {
+    const checkIfRateIsSet = async (userAddress: string) => {
+      // const res = await getIsRateSet(userAddress);
+      // setRateSet(res);
+    };
+
+    checkIfRateIsSet(userAddress);
+  }, [userAddress]);
 
   const artist = currentState?.track_window?.current_track?.artists[0];
 
@@ -37,9 +66,11 @@ export const SpotifyPlayer = () => {
     };
     if (artist) {
       const uriParts = artist.uri.split(":");
+      // setUserDenied(false);
       checkArtistLinked(uriParts[2]);
     } else {
       setValidArtist(false);
+      setUserDenied(false);
     }
   }, [artist]);
 
@@ -92,6 +123,11 @@ export const SpotifyPlayer = () => {
 
   const handleTogglePlay = async () => {
     console.log("toggling play");
+    if (showStartFlow) {
+      console.log("gonna start flow");
+      // await the create flow transaction modal
+    }
+
     await window.playr.togglePlay();
   };
 
@@ -127,7 +163,17 @@ export const SpotifyPlayer = () => {
               {`>>`}
             </Button>
           </Box>
-          {validArtist && <ArtistEligible />}
+          {showValidArtistModal && (
+            <ArtistEligible
+              setUserDenied={setUserDenied}
+              handleTogglePlay={handleTogglePlay}
+              setWantsToStream={setWantsToStream}
+            />
+          )}
+
+          {showConnectModal && <ConnectWallet />}
+
+          {showSetFlowModal && <SetFlowRate userAddress={userAddress} />}
         </Container>
       </div>
     </>

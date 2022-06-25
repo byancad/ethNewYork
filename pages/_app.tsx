@@ -11,17 +11,15 @@ import theme from "styles/theme";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-    <Provider>
-      <SpotifyUser>
-      <WagmiConfig client={client}>
-        <Wagmi>
-         
-            <Component {...pageProps} />
-         
-        </Wagmi>
-      </WagmiConfig>
-      </SpotifyUser>
-    </Provider>
+      <Provider>
+        <SpotifyUser>
+          <WagmiConfig client={client}>
+            <Wagmi>
+              <Component {...pageProps} />
+            </Wagmi>
+          </WagmiConfig>
+        </SpotifyUser>
+      </Provider>
     </ChakraProvider>
   );
 }

@@ -1,37 +1,25 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalOverlay,
   useDisclosure,
-  VStack,
-  Text,
-  Image,
-  StackDivider,
   ModalHeader,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { CreateFlow } from "components/Forms/CreateFlow";
 import { SetFlowRateForm } from "components/Forms/SetFlowRate";
-import useUserContext from "hooks/useUserContext";
+import { useEffect } from "react";
 
-const ConnectWeb3 = () => {
+type SetFlowRateProps = {
+  userAddress: string;
+};
+
+const SetFlowRate = ({ userAddress }: SetFlowRateProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const {
-    wagmi: { connectors, connect },
-  } = useUserContext();
+  useEffect(() => onOpen(), []);
 
   return (
     <>
-      <Button
-        _focus={{ boxShadow: "none" }}
-        bgGradient="linear(to-l, #7928CA, #FF0080)"
-        onClick={onOpen}
-      >
-        Set Flow
-      </Button>
       <Modal
         isCentered
         isOpen={isOpen}
@@ -54,7 +42,7 @@ const ConnectWeb3 = () => {
             flowing.
           </ModalBody>
           <ModalBody>
-            <SetFlowRateForm />
+            <SetFlowRateForm userAddress={userAddress} />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -62,4 +50,4 @@ const ConnectWeb3 = () => {
   );
 };
 
-export default ConnectWeb3;
+export default SetFlowRate;

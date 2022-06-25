@@ -11,10 +11,12 @@ import {
   StackDivider,
 } from "@chakra-ui/react";
 import useUserContext from "hooks/useUserContext";
+import { useEffect } from "react";
 import { isClient } from "utils/ui";
 
 const ConnectWeb3 = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  useEffect(() => onOpen(), []);
 
   const {
     wagmi: { connectors, connect },
@@ -22,14 +24,19 @@ const ConnectWeb3 = () => {
 
   return (
     <>
-      <Button
+      {/* <Button
         _focus={{ boxShadow: "none" }}
         bgGradient="linear(to-l, #7928CA, #FF0080)"
         onClick={onOpen}
       >
         Connect
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom">
+      </Button> */}
+      <Modal
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+        motionPreset="slideInBottom"
+      >
         <ModalOverlay />
         <ModalContent
           padding={"0px"}
