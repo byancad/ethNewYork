@@ -12,14 +12,14 @@ type UserContextType = {
 
 const initialState: UserStateType = {
   spotify: "",
-  wagmi: ""
+  wagmi: "",
 };
 
 export enum UserContextActionTypes {
   SET_SPOTIFY_USER = "SET_SPOTIFY_USER",
   CLEAR_SPOTIFY_USER = "CLEAR_SPOTIFY_USER",
   SET_WAGMI_USER = "SET_WAGMI_USER",
-  CLEAR_WAGMI_USER = "CLEAR_WAGMI_USER"
+  CLEAR_WAGMI_USER = "CLEAR_WAGMI_USER",
 }
 
 type UserActionCreators = {
@@ -43,23 +43,23 @@ const reducer: Reducer<UserStateType, UserActions> = (
     case UserContextActionTypes.SET_SPOTIFY_USER: {
       return {
         ...state,
-        spotify: action.payload.spotify
+        spotify: action.payload.spotify,
       };
     }
     case UserContextActionTypes.CLEAR_SPOTIFY_USER: {
       return {
-        ...initialState
+        ...initialState,
       };
     }
     case UserContextActionTypes.SET_WAGMI_USER: {
       return {
         ...state,
-        wagmi: action.payload.wagmi
+        wagmi: action.payload.wagmi,
       };
     }
     case UserContextActionTypes.CLEAR_WAGMI_USER: {
       return {
-        ...initialState
+        ...initialState,
       };
     }
     default: {
