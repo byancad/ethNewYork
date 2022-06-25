@@ -29,7 +29,7 @@ const ConnectWeb3 = () => {
       >
         Connect
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom">
         <ModalOverlay />
         <ModalContent
           padding={"0px"}
