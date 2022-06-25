@@ -11,7 +11,12 @@ import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
 import { useRouter } from "next/router";
+<<<<<<< HEAD
 import { SpotifyUser } from "components/SpotifyUser/SpotifyUser";
+import ConnectWallet from "components/Modals/ConnectWallet";
+=======
+import ConnectWallet from "components/Modals/ConnectWallet";
+>>>>>>> de84fc8 (add wallet connect modal)
 
 const Home: NextPage = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -41,9 +46,7 @@ const Home: NextPage = () => {
         <div>
           <DeleteFlow />
         </div>
-        <div>
-   
-        </div>
+        <ConnectWallet />
      
         <div>
           {token ? (

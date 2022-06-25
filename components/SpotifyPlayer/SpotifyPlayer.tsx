@@ -1,4 +1,5 @@
 import { Button } from "@chakra-ui/react";
+import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
 
@@ -27,9 +28,7 @@ export const SpotifyPlayer = () => {
       const player = new window.Spotify.Player({
         name: "Spotify Web Player",
         getOAuthToken: (cb: any) => {
-          const spotifyToken =
-            "BQBeyJmn7qhNSO3LZF7XFVWNQMDe2Cp0yPQOcUUor5CVPJr2ctEIsR_IvlCQ3rr3Hrfck7J0g0oNuf1Qz23tlHuPyXTYAnShIYZjMi9De2Rqss-LntLmrIrY8E0k6kc8pyTHg0un1K5gsYYbWWL3CR9OOgqChXi-duV54zoqkolGVJ1eoGamPzLwqpPSP--IHHWf";
-          cb(spotifyToken);
+          cb(TEMP_SPOTIFY_TOKEN);
         },
       });
       initializePlayer(player);
@@ -86,31 +85,35 @@ export const SpotifyPlayer = () => {
       console.log("Resumed!");
     });
 
-    // let el = document.getElementById("togglePlay");
-    // if (el) {
-    //   el.onclick = () => {
-    //     console.log("toggling playback");
-    //     player.togglePlay();
-    //   };
-    // }
-    // setHandlePlay(player.togglePlay);
-
     window.playr = player;
   };
 
-  const handleClick = async () => {
-    console.log("doing stuff");
-    window.playr.togglePlay();
+  const handleTogglePlay = async () => {
+    console.log("toggling play");
+    await window.playr.togglePlay();
+  };
+
+  const handleNext = async () => {
+    console.log("next track");
+    await window.playr.nextTrack();
+  };
+
+  const handlePrevious = async () => {
+    console.log("previous track");
+    await window.playr.previousTrack();
   };
 
   return (
     <>
       <div>
-        <div>Player</div>
-        {token && <div>Player Ready: {playerLoaded.toString()}</div>}
-
-        <Button onClick={handleClick} disabled={!playerLoaded}>
+        <Button onClick={handlePrevious} disabled={!playerLoaded}>
+          {`<<`}
+        </Button>
+        <Button onClick={handleTogglePlay} disabled={!playerLoaded}>
           Play
+        </Button>
+        <Button onClick={handleNext} disabled={!playerLoaded}>
+          {`>>`}
         </Button>
       </div>
     </>
