@@ -6,20 +6,23 @@ import { WagmiConfig } from "wagmi";
 import { client } from "configs/wagmi";
 import { ChakraProvider } from "@chakra-ui/react";
 import { SpotifyUser } from "components/SpotifyUser/SpotifyUser";
+import theme from "styles/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+    <ChakraProvider theme={theme}>
     <Provider>
       <SpotifyUser>
       <WagmiConfig client={client}>
         <Wagmi>
-          <ChakraProvider>
+         
             <Component {...pageProps} />
-          </ChakraProvider>
+         
         </Wagmi>
       </WagmiConfig>
       </SpotifyUser>
     </Provider>
+    </ChakraProvider>
   );
 }
 
