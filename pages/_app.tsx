@@ -10,10 +10,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider>
       <WagmiConfig client={client}>
-        <Wagmi />
-        <ChakraProvider>
-          <Component {...pageProps} />
-        </ChakraProvider>
+        <Wagmi>
+          <ChakraProvider>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </Wagmi>
       </WagmiConfig>
     </Provider>
   );
