@@ -3,6 +3,7 @@ import { Framework } from "@superfluid-finance/sdk-core";
 import { Signer } from "ethers";
 import { ChangeEvent, useState } from "react";
 import { customHttpProvider } from "configs/superfluid";
+import useUserContext from "hooks/useUserContext";
 
 type FormData = {
   recipient: string;
@@ -52,12 +53,17 @@ const createNewFlow = async (
   }
 };
 
-export const CreateFlow = (signer: Signer) => {
+export const CreateFlow = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<FormData>({
-    recipient: "",
-    flowRate: "",
+    recipient: "0x25a1735D2490F8f6a72874B8d1084E0745DC01f2",
+    flowRate: "385802",
   });
+
+  const {
+    wagmi: { signer },
+  } = useUserContext();
+
   const handleOnSubmit = async (e: any) => {
     e.preventDefault();
     setSubmitting(true);
@@ -67,11 +73,14 @@ export const CreateFlow = (signer: Signer) => {
     } else {
       console.log("sign in foo !");
     }
+    setSubmitting(false);
   };
+
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
+
   return (
     <>
       <div>
