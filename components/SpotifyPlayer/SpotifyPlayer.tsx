@@ -1,4 +1,4 @@
-import { Box, Button, Container, Image } from "@chakra-ui/react";
+import { Box, Button, Container, IconButton, Image } from "@chakra-ui/react";
 import ArtistEligible from "components/Modals/ArtistEligible";
 import ConnectWallet from "components/Modals/ConnectWallet";
 import SetFlowRate from "components/Modals/SetFlowRate";
@@ -6,6 +6,8 @@ import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
 import useUserContext from "hooks/useUserContext";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
+import { Icon, createIcon } from "@chakra-ui/react";
+import React from "react";
 
 declare global {
   interface Window {
@@ -82,7 +84,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5,
+          volume: 0.5
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -151,16 +153,29 @@ export const SpotifyPlayer = () => {
           {trackWindow?.current_track.name}
           <br />
           {trackWindow?.current_track.artists[0].name}
-
           <Box display="flex" alignItems="center" marginTop="10">
-            <Button onClick={handlePrevious} disabled={!playerLoaded}>
-              {`<<`}
+            <Button
+              onClick={handlePrevious}
+              disabled={!playerLoaded}
+              borderRadius="20px"
+            >
+              {`<`}
             </Button>
-            <Button onClick={handleTogglePlay} disabled={!playerLoaded}>
-              Play
-            </Button>
-            <Button onClick={handleNext} disabled={!playerLoaded}>
-              {`>>`}
+            <Button
+              borderRadius="30px"
+              onClick={handleTogglePlay}
+              disabled={!playerLoaded}
+              backgroundImage="/play-button-svgrepo-com.svg"
+              size="lg"
+              padding="8"
+              margin="4"
+            ></Button>
+            <Button
+              onClick={handleNext}
+              disabled={!playerLoaded}
+              borderRadius="20px"
+            >
+              {`>`}
             </Button>
           </Box>
           {showValidArtistModal && (
@@ -174,6 +189,8 @@ export const SpotifyPlayer = () => {
           {showConnectModal && <ConnectWallet />}
 
           {showSetFlowModal && <SetFlowRate userAddress={userAddress} />}
+
+          {validArtist && <ArtistEligible />}
         </Container>
       </div>
     </>
