@@ -1,7 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getAccessToken } from 'utils/localStorage'
 
 type Data = {
   name: string
@@ -18,5 +17,7 @@ export default async function handler(
           "Content-Type" : 'application/json'
       }
   })
-  console.log(response.data)
+  const data = response.data;
+  res.status(200).json(data);
+
 }
