@@ -7,22 +7,22 @@ type FormData = {
   flowRate: number | undefined;
 };
 
-export const SetFlowRateForm = () => {
+type SetFlowRateProps = {
+  userAddress: string;
+};
+
+export const SetFlowRateForm = ({ userAddress }: SetFlowRateProps) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<FormData>({
     flowRate: undefined,
   });
 
-  const {
-    wagmi: { signer },
-  } = useUserContext();
-
   const handleOnSubmit = async (e: any) => {
     e.preventDefault();
     setSubmitting(true);
     const { flowRate } = formValues;
-    if (signer) {
-      //   await saveFlowRate(flowRate, signer);
+    if (userAddress) {
+      //   await saveFlowRate(flowRate, userAddress);
     } else {
       console.log("sign in foo !");
     }
