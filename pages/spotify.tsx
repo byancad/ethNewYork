@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { serverRequest } from "configs/axios";
+import { setRefreshToken, setAccessToken } from "utils/localStorage";
 
 const Spotify: NextPage = () => {
   const router = useRouter();
@@ -11,10 +12,12 @@ const Spotify: NextPage = () => {
       const res = await serverRequest().get(
         `api/spotify/access-token?code=${code}&state=${state}`
       );
-      console.log(res.data);
       const { access_token, refresh_token } = res.data;
-      localStorage.setItem("spotify_access_token", access_token);
-      localStorage.setItem("refresh_token", refresh_token);
+
+      setAccessToken(access_token);
+      setRefreshToken(refresh_token);
+
+      router.push("/player");
     };
     if (code && state) {
       getAccessToken();
