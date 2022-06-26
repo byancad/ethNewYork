@@ -10,6 +10,8 @@ import { getArtistWallet, getListenerRate } from "services/db";
 import { getAccessToken } from "utils/localStorage";
 import React from "react";
 import { Nav } from "components/Nav/Nav";
+import { WrongChain } from "components/Notices/WrongChain";
+import { Not8trac } from "components/Notices/Not8trac";
 
 declare global {
   interface Window {
@@ -166,18 +168,36 @@ export const SpotifyPlayer = () => {
     await window.playr.previousTrack();
   };
 
+  if (!currentState) {
+    return <Not8trac />;
+  }
+  const chainID = wagmi?.chainID;
+  const supportedNetwork = [5, 4, 80001, 69, 100];
+  console.log(chainID + supportedNetwork);
+  if (currentState && chainID && !supportedNetwork.includes(chainID)) {
+    return <WrongChain />;
+  }
+
   return (
     <>
       <div>
         <Nav />
         <Container centerContent marginTop="40">
+        <Container centerContent marginTop="32">
           <Box alignItems="center" maxW="sm">
-            <Image src={trackWindow?.current_track.album.images[2].url} />
+            <Image
+              borderRadius="10px"
+              src={trackWindow?.current_track.album.images[2].url}
+            />
           </Box>
-          {trackWindow?.current_track.name}
-          <br />
-          {trackWindow?.current_track.artists[0].name}
-          <Box display="flex" alignItems="center">
+          <Box alignItems="center">
+            <p>{trackWindow?.current_track.name}</p>
+          </Box>
+          <Box>
+            <p>{trackWindow?.current_track.artists[0].name}</p>
+          </Box>
+
+          <Box display="flex" alignItems="center" marginTop="8">
             <Button
               onClick={handlePrevious}
               disabled={!playerLoaded}
@@ -186,14 +206,14 @@ export const SpotifyPlayer = () => {
               {`<`}
             </Button>
             <Button
-              borderRadius="30px"
+              bgImage="/play_logo.png"
+              variant="ghost"
+              _hover={{ bg: "#ffffff00" }}
               onClick={handleTogglePlay}
               disabled={!playerLoaded}
-              backgroundImage="/play-button-svgrepo-com.svg"
-              size="lg"
-              padding="8"
-              margin="4"
-            ></Button>
+            >
+              <img src="/play_logo.png"></img>
+            </Button>
             <Button
               onClick={handleNext}
               disabled={!playerLoaded}

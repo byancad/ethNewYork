@@ -1,7 +1,6 @@
 import { DeleteFlow } from "components/Forms/DeleteFlow";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { CreateFlow } from "../components/Forms/CreateFlow";
 import styles from "../styles/Home.module.css";
 import { serverRequest } from "../configs/axios";
@@ -10,6 +9,7 @@ import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
 import ConnectWallet from "components/Modals/ConnectWallet";
+import { Image } from "@chakra-ui/react";
 
 
 const Home: NextPage = () => {
@@ -31,12 +31,13 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to 8trac</h1>
-        <p className={styles.description}>A Music $treaming Platform</p>
+        <Image src="/FullLogo_Transparent_NoBuffer.png"
+           height="300px"
+            ></Image>
         <div>
           {token ? (
             <Link href={"player"}>
-              <Button mt={4} colorScheme="teal">
+              <Button mt={4} bgColor="#52BD13" size='lg'>
                 Go to Player
               </Button>
             </Link>
@@ -44,7 +45,7 @@ const Home: NextPage = () => {
             <Link
               href={`${process.env.SPOTIFY_BASE_URL}authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.API_BASE_URL}spotify&state=ahgjtirutyghdjke&scope=user-read-private user-read-email`}
             >
-              <Button mt={4} colorScheme="teal">
+              <Button mt={4} bgColor="#52BD13" size='lg'>
                 Connect Spotify
               </Button>
             </Link>
