@@ -7,7 +7,7 @@ import {
   useDisconnect,
   useNetwork,
   useSigner,
-  useSignMessage,
+  useSignMessage
 } from "wagmi";
 
 export const Session = () => {
@@ -32,11 +32,12 @@ export const Session = () => {
         chainID: activeChain?.id,
         connect,
         connectors,
-        disconnect: handleDisconnect,
+        disconnect: handleDisconnect
       };
       setWagmiUser(wagmiData);
     };
     updateContext();
   }, [signer, accountData, activeChain, connect, connectors, disconnect]);
+  console.log(accountData);
   return <></>;
 };

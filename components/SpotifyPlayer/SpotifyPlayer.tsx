@@ -55,7 +55,7 @@ export const SpotifyPlayer = () => {
       userDenied,
       wantsToStream,
       userAddress,
-      rateSet,
+      rateSet
     });
   }, [validArtist, userDenied, wantsToStream, userAddress, rateSet]);
 
@@ -155,7 +155,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5,
+          volume: 0.5
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -204,7 +204,7 @@ export const SpotifyPlayer = () => {
     return <Not8trac />;
   }
   const chainID = wagmi?.chainID;
-  const supportedNetwork = [5, 4, 80001, 69, 100];
+  const supportedNetwork = [5, 4, 80001, 69, 100, 42];
   if (currentState && chainID && !supportedNetwork.includes(chainID)) {
     return <WrongChain />;
   }
