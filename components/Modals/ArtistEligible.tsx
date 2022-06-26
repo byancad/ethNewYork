@@ -9,12 +9,12 @@ import {
   ModalFooter,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 type ArtistEligibleProps = {
   handleTogglePlay: () => void;
-  setUserDenied: (flag: boolean) => void;
-  setWantsToStream: (flag: boolean) => void;
+  setUserDenied: Dispatch<SetStateAction<boolean>>;
+  setWantsToStream: Dispatch<SetStateAction<boolean>>;
 };
 
 const ArtistEligible = ({
