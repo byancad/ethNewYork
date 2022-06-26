@@ -26,6 +26,7 @@ export const SpotifyPlayer = () => {
   const [token, setToken] = useState<string | null>(null);
   const [currentState, setCurrentState] = useState<any>();
   const [playerError, setPlayerError] = useState<any>();
+  const [streaming, setStreaming] = useState<boolean>(false);
   const artistRef = useRef(null);
   const trackWindow = currentState?.track_window;
 
@@ -72,7 +73,13 @@ export const SpotifyPlayer = () => {
       const recipient = await getArtistWallet(id);
       const rate = await getListenerRate(userAddress);
 
-      await createNewFlow(recipient, rate, wagmi?.signer);
+      await createNewFlow(
+        recipient,
+        rate,
+        wagmi?.signer,
+        wagmi?.chainID,
+        setStreaming
+      );
     };
     if (showStartFlow) {
       const uriParts = artist.uri.split(":");
@@ -117,7 +124,7 @@ export const SpotifyPlayer = () => {
     ) => {
       console.log({ currentArtist, newArtist, signer });
       const artistAddress = await getArtistWallet(currentArtist);
-      await deleteFlow(artistAddress, signer);
+      await deleteFlow(artistAddress, signer, wagmi?.chainID, setStreaming);
       currentArtist = newArtist;
       await checkArtistLinked(newArtist);
     };
@@ -138,8 +145,6 @@ export const SpotifyPlayer = () => {
     } else {
       resetValues();
     }
-
-    console.log("running artist change");
   }, [artist]);
 
   useEffect(() => {
@@ -167,12 +172,6 @@ export const SpotifyPlayer = () => {
         player.connect().then((success: any) => {
           if (success) setPlayerLoaded(true);
         });
-        player.pause().then(() => {
-          console.log("Paused!");
-        });
-        player.resume().then(() => {
-          console.log("Resumed!");
-        });
         window.playr = player;
       };
     } else {
@@ -194,12 +193,10 @@ export const SpotifyPlayer = () => {
   };
 
   const handleNext = async () => {
-    console.log("next track");
     await window.playr.nextTrack();
   };
 
   const handlePrevious = async () => {
-    console.log("previous track");
     await window.playr.previousTrack();
   };
 
@@ -208,7 +205,6 @@ export const SpotifyPlayer = () => {
   }
   const chainID = wagmi?.chainID;
   const supportedNetwork = [5, 4, 80001, 69, 100];
-  console.log(chainID + supportedNetwork);
   if (currentState && chainID && !supportedNetwork.includes(chainID)) {
     return <WrongChain />;
   }
@@ -220,6 +216,7 @@ export const SpotifyPlayer = () => {
         <Container centerContent marginTop="22">
           <Box alignItems="center" maxW="sm">
             <Image
+              borderColor={streaming ? "#52BD13" : ""}
               borderRadius="10px"
               src={trackWindow?.current_track.album.images[2].url}
             />
@@ -266,7 +263,9 @@ export const SpotifyPlayer = () => {
 
           {showConnectModal && <ConnectWallet />}
 
-          {showSetFlowModal && <SetFlowRate userAddress={userAddress} />}
+          {showSetFlowModal && (
+            <SetFlowRate chainID={wagmi?.chainID} userAddress={userAddress} />
+          )}
         </Container>
       </div>
     </>

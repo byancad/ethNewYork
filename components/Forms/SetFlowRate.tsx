@@ -9,9 +9,13 @@ type FormData = {
 
 type SetFlowRateProps = {
   userAddress: string;
+  suggested: string;
 };
 
-export const SetFlowRateForm = ({ userAddress }: SetFlowRateProps) => {
+export const SetFlowRateForm = ({
+  userAddress,
+  suggested,
+}: SetFlowRateProps) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<FormData>({
     flowRate: undefined
@@ -41,7 +45,7 @@ export const SetFlowRateForm = ({ userAddress }: SetFlowRateProps) => {
           onChange={handleOnChange}
           value={formValues.flowRate}
           name="flowRate"
-          placeholder="Enter a flowRate in wei/second"
+          placeholder={`Enter a flowRate in wei/second (i.e ${suggested}`}
           size="md"
         />
 
