@@ -8,11 +8,14 @@ export const LogoLeft = () => {
         style={{
           textDecoration: "none",
           fontSize: "24px",
-          fontWeight: "bold",
+          fontWeight: "bold"
         }}
         _focus={{ boxShadow: "none" }}
       >
-        8trac
+        <Box as="button" height="2px">
+          {" "}
+          <img src="8traclogo.png" />
+        </Box>
       </Link>
     </Box>
   );

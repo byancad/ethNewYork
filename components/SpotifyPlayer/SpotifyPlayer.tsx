@@ -52,7 +52,7 @@ export const SpotifyPlayer = () => {
       userDenied,
       wantsToStream,
       userAddress,
-      rateSet,
+      rateSet
     });
   }, [validArtist, userDenied, wantsToStream, userAddress, rateSet]);
 
@@ -109,7 +109,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5,
+          volume: 0.5
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -182,8 +182,7 @@ export const SpotifyPlayer = () => {
     <>
       <div>
         <Nav />
-        <Container centerContent marginTop="40">
-        <Container centerContent marginTop="32">
+        <Container centerContent marginTop="22">
           <Box alignItems="center" maxW="sm">
             <Image
               borderRadius="10px"
