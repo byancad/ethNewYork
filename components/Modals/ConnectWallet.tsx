@@ -14,9 +14,16 @@ import useUserContext from "hooks/useUserContext";
 import { useEffect } from "react";
 import { isClient } from "utils/ui";
 
-const ConnectWeb3 = () => {
+type ConnectWeb3Props = {
+  showButton?: boolean;
+};
+const ConnectWeb3 = ({ showButton }: ConnectWeb3Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  useEffect(() => onOpen(), []);
+  useEffect(() => {
+    if (!showButton) {
+      onOpen();
+    }
+  }, []);
 
   const {
     wagmi: { connectors, connect },
@@ -24,13 +31,16 @@ const ConnectWeb3 = () => {
 
   return (
     <>
-      {/* <Button
-        _focus={{ boxShadow: "none" }}
-        bgGradient="linear(to-l, #7928CA, #FF0080)"
-        onClick={onOpen}
-      >
-        Connect
-      </Button> */}
+      {showButton && (
+        <Button
+          _focus={{ boxShadow: "none" }}
+          bgGradient="linear(to-l, #7928CA, #FF0080)"
+          onClick={onOpen}
+        >
+          Connect
+        </Button>
+      )}
+
       <Modal
         isCentered
         isOpen={isOpen}

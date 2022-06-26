@@ -8,8 +8,8 @@ import useUserContext from "hooks/useUserContext";
 import { useEffect, useState } from "react";
 import { getArtistWallet, getListenerRate } from "services/db";
 import { getAccessToken } from "utils/localStorage";
-import { Icon, createIcon } from "@chakra-ui/react";
 import React from "react";
+import { Nav } from "components/Nav/Nav";
 
 declare global {
   interface Window {
@@ -107,7 +107,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5
+          volume: 0.5,
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -169,6 +169,7 @@ export const SpotifyPlayer = () => {
   return (
     <>
       <div>
+        <Nav />
         <Container centerContent marginTop="40">
           <Box alignItems="center" maxW="sm">
             <Image src={trackWindow?.current_track.album.images[2].url} />
@@ -212,8 +213,6 @@ export const SpotifyPlayer = () => {
           {showConnectModal && <ConnectWallet />}
 
           {showSetFlowModal && <SetFlowRate userAddress={userAddress} />}
-
-          {validArtist && <ArtistEligible />}
         </Container>
       </div>
     </>
