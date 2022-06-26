@@ -3,15 +3,16 @@ import ArtistEligible from "components/Modals/ArtistEligible";
 import ConnectWallet from "components/Modals/ConnectWallet";
 import SetFlowRate from "components/Modals/SetFlowRate";
 import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
-import { createNewFlow } from "helpers/superfluid";
+import { createNewFlow, deleteFlow } from "helpers/superfluid";
 import useUserContext from "hooks/useUserContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getArtistWallet, getListenerRate } from "services/db";
 import { getAccessToken } from "utils/localStorage";
 import React from "react";
 import { Nav } from "components/Nav/Nav";
 import { WrongChain } from "components/Notices/WrongChain";
 import { Not8trac } from "components/Notices/Not8trac";
+import { Signer } from "ethers";
 
 declare global {
   interface Window {
@@ -25,6 +26,7 @@ export const SpotifyPlayer = () => {
   const [token, setToken] = useState<string | null>(null);
   const [currentState, setCurrentState] = useState<any>();
   const [playerError, setPlayerError] = useState<any>();
+  const artistRef = useRef(null);
   const trackWindow = currentState?.track_window;
 
   // vars for modals
@@ -52,9 +54,18 @@ export const SpotifyPlayer = () => {
       userDenied,
       wantsToStream,
       userAddress,
-      rateSet
+      rateSet,
     });
   }, [validArtist, userDenied, wantsToStream, userAddress, rateSet]);
+
+  useEffect(() => {
+    const tempPause = async () => {
+      await handleTogglePlay();
+    };
+    if (showValidArtistModal) {
+      tempPause();
+    }
+  }, [showValidArtistModal]);
 
   useEffect(() => {
     const startFlow = async (id: string) => {
@@ -87,18 +98,48 @@ export const SpotifyPlayer = () => {
     })();
   }, []);
 
+  const resetValues = () => {
+    setValidArtist(false);
+    setUserDenied(false);
+    setWantsToStream(false);
+  };
+
   useEffect(() => {
     const checkArtistLinked = async (id: string) => {
       const wallet = await getArtistWallet(id);
       setValidArtist(!!wallet);
     };
+
+    const stopStream = async (
+      currentArtist: any,
+      newArtist: string,
+      signer: Signer
+    ) => {
+      console.log({ currentArtist, newArtist, signer });
+      const artistAddress = await getArtistWallet(currentArtist);
+      await deleteFlow(artistAddress, signer);
+      currentArtist = newArtist;
+      await checkArtistLinked(newArtist);
+    };
+
     if (artist) {
       const uriParts = artist.uri.split(":");
-      checkArtistLinked(uriParts[2]);
+      const artistId = uriParts[2];
+      if (artistId !== artistRef.current) {
+        //artist changed
+        resetValues();
+        if (showStartFlow) {
+          stopStream(artistRef.current, artistId, wagmi?.signer);
+        } else {
+          artistRef.current = artistId;
+          checkArtistLinked(artistId);
+        }
+      }
     } else {
-      setValidArtist(false);
-      setUserDenied(false);
+      resetValues();
     }
+
+    console.log("running artist change");
   }, [artist]);
 
   useEffect(() => {
@@ -109,7 +150,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5
+          volume: 0.5,
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -149,12 +190,6 @@ export const SpotifyPlayer = () => {
   };
 
   const handleTogglePlay = async () => {
-    console.log("toggling play");
-    if (showStartFlow) {
-      console.log("gonna start flow");
-      // await the create flow transaction modal
-    }
-
     await window.playr.togglePlay();
   };
 
