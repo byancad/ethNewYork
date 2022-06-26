@@ -5,8 +5,9 @@ import {
   MenuItem,
   Avatar,
   useClipboard,
-  Link,
+  Link
 } from "@chakra-ui/react";
+import useUserContext from "hooks/useUserContext";
 
 import { ellipsisString } from "utils/ui";
 
@@ -17,7 +18,8 @@ type MenuContainerProps = {
 
 export const DropDownMenu = ({ address, disconnect }: MenuContainerProps) => {
   const { hasCopied, onCopy } = useClipboard(address);
-
+  const { wagmi } = useUserContext();
+  const userAddress = wagmi?.address;
   return (
     <Menu>
       <MenuButton
@@ -35,21 +37,14 @@ export const DropDownMenu = ({ address, disconnect }: MenuContainerProps) => {
         >
           {ellipsisString(address)}
         </MenuItem>
+
         <MenuItem>
           <Link
-            href="/drop"
+            href={`https://app.superfluid.finance/dashboard/${userAddress}`}
             _focus={{ boxShadow: "none" }}
             style={{ textDecoration: "none" }}
           >
-            Drop Tickets
-          </Link>
-        </MenuItem>
-        <MenuItem>
-          <Link
-            href={`https://staging-global.transak.com/?apiKey=${process.env.TRANSAK_API_KEY}&fiatCurrency=USD&cryptoCurrencyList=ETH&defaultCryptoCurrency=ETH&walletAddress=${address}&disableWalletAddressForm=true&exchangeScreenTitle=Stub3&isFeeCalculationHidden=true`}
-            style={{ textDecoration: "none" }}
-          >
-            Buy Crypto
+            Superfluid
           </Link>
         </MenuItem>
         <MenuItem
