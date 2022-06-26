@@ -8,7 +8,7 @@ import {
   VStack,
   Text,
   Image,
-  StackDivider,
+  StackDivider
 } from "@chakra-ui/react";
 import useUserContext from "hooks/useUserContext";
 import { useEffect } from "react";
@@ -26,7 +26,7 @@ const ConnectWeb3 = ({ showButton }: ConnectWeb3Props) => {
   }, []);
 
   const {
-    wagmi: { connectors, connect },
+    wagmi: { connectors, connect }
   } = useUserContext();
 
   return (
@@ -34,7 +34,7 @@ const ConnectWeb3 = ({ showButton }: ConnectWeb3Props) => {
       {showButton && (
         <Button
           _focus={{ boxShadow: "none" }}
-          bgGradient="linear(to-l, #7928CA, #FF0080)"
+          bgGradient="linear(to-r, #52BD13, #026e47)"
           onClick={onOpen}
         >
           Connect

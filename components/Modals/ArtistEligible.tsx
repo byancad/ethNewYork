@@ -7,7 +7,7 @@ import {
   useDisclosure,
   ModalHeader,
   ModalFooter,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useEffect } from "react";
 
@@ -20,7 +20,7 @@ type ArtistEligibleProps = {
 const ArtistEligible = ({
   handleTogglePlay,
   setUserDenied,
-  setWantsToStream,
+  setWantsToStream
 }: ArtistEligibleProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => onOpen(), []);
@@ -53,7 +53,7 @@ const ArtistEligible = ({
           <ModalHeader>Artist Linked</ModalHeader>
           <ModalBody>
             Yooo! Good news, this artist has a wallet linked. This means you can
-            start streaming them moneyz directly from your wallet to theres.
+            start streaming them moneyz directly from your wallet to theirs.
             Wanna to start streaming?
           </ModalBody>
           <ModalFooter mt={6}>
@@ -62,7 +62,7 @@ const ArtistEligible = ({
                 width="100%"
                 height={16}
                 _focus={{ boxShadow: "none" }}
-                bgGradient="linear(to-l, #7928CA, #FF0080)"
+                bgGradient="linear(to-r, #52BD13, #026e47)"
                 onClick={handleHellYeah}
               >
                 Hell yeah!
