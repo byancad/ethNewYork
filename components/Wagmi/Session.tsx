@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import useUserContext from "hooks/useUserContext";
 import React, { useEffect } from "react";
 import {
@@ -6,6 +7,7 @@ import {
   useDisconnect,
   useNetwork,
   useSigner,
+  useSignMessage,
 } from "wagmi";
 
 export const Session = () => {
@@ -15,6 +17,8 @@ export const Session = () => {
   const { activeChain } = useNetwork();
   const { data: signer } = useSigner();
   const { setWagmiUser, clearWagmiUser } = useUserContext();
+  console.log("addy", accountData?.address);
+
   console.log({ signer });
 
   const handleDisconnect = () => {
@@ -23,15 +27,19 @@ export const Session = () => {
   };
 
   useEffect(() => {
-    const wagmiData = {
-      signer,
-      address: accountData?.address,
-      chainID: activeChain?.id,
-      connect,
-      connectors,
-      disconnect: handleDisconnect,
+    const updateContext = async () => {
+      const signerAddress = await signer?.getAddress();
+      const wagmiData = {
+        signer,
+        address: signerAddress,
+        chainID: activeChain?.id,
+        connect,
+        connectors,
+        disconnect: handleDisconnect,
+      };
+      setWagmiUser(wagmiData);
     };
-    setWagmiUser(wagmiData);
+    updateContext();
   }, [signer, accountData, activeChain, connect, connectors, disconnect]);
   return <></>;
 };

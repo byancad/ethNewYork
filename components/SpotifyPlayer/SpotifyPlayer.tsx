@@ -3,8 +3,10 @@ import ArtistEligible from "components/Modals/ArtistEligible";
 import ConnectWallet from "components/Modals/ConnectWallet";
 import SetFlowRate from "components/Modals/SetFlowRate";
 import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
+import { createNewFlow } from "helpers/superfluid";
 import useUserContext from "hooks/useUserContext";
 import { useEffect, useState } from "react";
+import { getArtistWallet, getListenerRate } from "services/db";
 import { getAccessToken } from "utils/localStorage";
 import { Icon, createIcon } from "@chakra-ui/react";
 import React from "react";
@@ -30,7 +32,6 @@ export const SpotifyPlayer = () => {
   const [wantsToStream, setWantsToStream] = useState<boolean>(false);
   const { wagmi } = useUserContext();
   const userAddress = wagmi?.address;
-  console.log(wagmi);
 
   const showValidArtistModal = validArtist && !userDenied && !wantsToStream;
 
@@ -44,9 +45,32 @@ export const SpotifyPlayer = () => {
     validArtist && !userDenied && wantsToStream && userAddress && rateSet;
 
   useEffect(() => {
+    console.log({
+      validArtist,
+      userDenied,
+      wantsToStream,
+      userAddress,
+      rateSet,
+    });
+  }, [validArtist, userDenied, wantsToStream, userAddress, rateSet]);
+
+  useEffect(() => {
+    const startFlow = async (id: string) => {
+      const recipient = await getArtistWallet(id);
+      const rate = await getListenerRate(userAddress);
+
+      await createNewFlow(recipient, rate, wagmi?.signer);
+    };
+    if (showStartFlow) {
+      const uriParts = artist.uri.split(":");
+      startFlow(uriParts[2]);
+    }
+  }, [showStartFlow]);
+
+  useEffect(() => {
     const checkIfRateIsSet = async (userAddress: string) => {
-      // const res = await getIsRateSet(userAddress);
-      // setRateSet(res);
+      const rate = await getListenerRate(userAddress);
+      setRateSet(!!rate);
     };
 
     checkIfRateIsSet(userAddress);
@@ -63,12 +87,11 @@ export const SpotifyPlayer = () => {
 
   useEffect(() => {
     const checkArtistLinked = async (id: string) => {
-      const isValid = true;
-      setValidArtist(isValid);
+      const wallet = await getArtistWallet(id);
+      setValidArtist(!!wallet);
     };
     if (artist) {
       const uriParts = artist.uri.split(":");
-      // setUserDenied(false);
       checkArtistLinked(uriParts[2]);
     } else {
       setValidArtist(false);
