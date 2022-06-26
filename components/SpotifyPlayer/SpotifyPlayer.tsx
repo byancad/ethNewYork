@@ -2,7 +2,6 @@ import {
   Alert,
   AlertDescription,
   AlertIcon,
-  AlertTitle,
   Box,
   Button,
   Container,
@@ -225,16 +224,6 @@ export const SpotifyPlayer = () => {
       <div>
         <Nav />
         <Container centerContent marginTop="26">
-          {wagmi?.chainID === 4 && (
-            <Alert status="warning" height="50px" mb={6}>
-              <AlertIcon />
-              <AlertDescription>
-                Rinkeby is being deprecated soon! Transfer your assets now using
-                Connext
-              </AlertDescription>
-            </Alert>
-          )}
-
           {streaming && (
             <Alert status="success" height="50px" mb={6}>
               <AlertIcon />
