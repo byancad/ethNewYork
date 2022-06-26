@@ -8,6 +8,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { SpotifyUser } from "components/SpotifyUser/SpotifyUser";
 import theme from "styles/theme";
 
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { getAccessToken } from "utils/localStorage";
 import ConnectWallet from "components/Modals/ConnectWallet";
 
+
 const Home: NextPage = () => {
   const [token, setToken] = useState<string | null>(null);
 
