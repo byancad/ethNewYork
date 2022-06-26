@@ -5,7 +5,7 @@ import SetFlowRate from "components/Modals/SetFlowRate";
 import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
 import { createNewFlow } from "helpers/superfluid";
 import useUserContext from "hooks/useUserContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getArtistWallet, getListenerRate } from "services/db";
 import { getAccessToken } from "utils/localStorage";
 import React from "react";
@@ -25,6 +25,7 @@ export const SpotifyPlayer = () => {
   const [token, setToken] = useState<string | null>(null);
   const [currentState, setCurrentState] = useState<any>();
   const [playerError, setPlayerError] = useState<any>();
+  const artistRef = useRef(null);
   const trackWindow = currentState?.track_window;
 
   // vars for modals
@@ -52,7 +53,7 @@ export const SpotifyPlayer = () => {
       userDenied,
       wantsToStream,
       userAddress,
-      rateSet
+      rateSet,
     });
   }, [validArtist, userDenied, wantsToStream, userAddress, rateSet]);
 
@@ -87,18 +88,32 @@ export const SpotifyPlayer = () => {
     })();
   }, []);
 
+  const resetValues = () => {
+    setValidArtist(false);
+    setUserDenied(false);
+    setWantsToStream(false);
+  };
+
   useEffect(() => {
     const checkArtistLinked = async (id: string) => {
       const wallet = await getArtistWallet(id);
       setValidArtist(!!wallet);
     };
+
     if (artist) {
       const uriParts = artist.uri.split(":");
-      checkArtistLinked(uriParts[2]);
+      const artistId = uriParts[2];
+      if (artistId !== artistRef.current) {
+        //artist changed
+        resetValues();
+        artistRef.current = artistId;
+        checkArtistLinked(artistId);
+      }
     } else {
-      setValidArtist(false);
-      setUserDenied(false);
+      resetValues();
     }
+
+    console.log("running artist change");
   }, [artist]);
 
   useEffect(() => {
@@ -109,7 +124,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5
+          volume: 0.5,
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -149,12 +164,6 @@ export const SpotifyPlayer = () => {
   };
 
   const handleTogglePlay = async () => {
-    console.log("toggling play");
-    if (showStartFlow) {
-      console.log("gonna start flow");
-      // await the create flow transaction modal
-    }
-
     await window.playr.togglePlay();
   };
 
