@@ -5,6 +5,7 @@ export const Providers: Mappings = {
     "https://polygon-mumbai.g.alchemy.com/v2/rgHYYn5mu6VczK5MnJs1KlDsBBdvfXxH",
   69: "https://opt-kovan.g.alchemy.com/v2/vdehzc2xCgs4Nb3OU0Xmyk5-cN0HArJO",
   5: "https://eth-goerli.alchemyapi.io/v2/vquOZIRyqOKfUpCpVFwPbp4KTgU0jYJR",
+  100: "https://gno.getblock.io/mainnet/?api_key=dde440b6-d9af-4de8-a5bc-6381a9bc65dc",
 };
 
 export const Subgraphs: Mappings = {

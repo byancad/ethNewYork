@@ -1,4 +1,12 @@
-import { Box, Button, Container, IconButton, Image } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  Box,
+  Button,
+  Container,
+  Image,
+} from "@chakra-ui/react";
 import ArtistEligible from "components/Modals/ArtistEligible";
 import ConnectWallet from "components/Modals/ConnectWallet";
 import SetFlowRate from "components/Modals/SetFlowRate";
@@ -38,6 +46,8 @@ export const SpotifyPlayer = () => {
   const { wagmi } = useUserContext();
   const userAddress = wagmi?.address;
 
+  console.log({ streaming });
+
   const showValidArtistModal = validArtist && !userDenied && !wantsToStream;
 
   const showConnectModal =
@@ -55,7 +65,7 @@ export const SpotifyPlayer = () => {
       userDenied,
       wantsToStream,
       userAddress,
-      rateSet
+      rateSet,
     });
   }, [validArtist, userDenied, wantsToStream, userAddress, rateSet]);
 
@@ -155,7 +165,7 @@ export const SpotifyPlayer = () => {
           getOAuthToken: (cb: any) => {
             cb(TEMP_SPOTIFY_TOKEN);
           },
-          volume: 0.5
+          volume: 0.5,
         });
         player.setName("8trac");
         player.addListener("player_state_changed", handleStateChange);
@@ -213,12 +223,20 @@ export const SpotifyPlayer = () => {
     <>
       <div>
         <Nav />
-        <Container centerContent marginTop="22">
+        <Container centerContent marginTop="26">
+          {streaming && (
+            <Alert status="success" height="50px" mb={6}>
+              <AlertIcon />
+              <AlertDescription>
+                Sick! Your currently streaming to this artist's wallet
+              </AlertDescription>
+            </Alert>
+          )}
+
           <Box alignItems="center" maxW="sm">
             <Image
-              borderColor={streaming ? "#52BD13" : ""}
               borderRadius="10px"
-              src={trackWindow?.current_track.album.images[2].url}
+              src={trackWindow?.current_track?.album?.images[2]?.url}
             />
           </Box>
           <Box alignItems="center">
