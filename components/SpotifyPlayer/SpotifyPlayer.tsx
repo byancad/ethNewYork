@@ -3,7 +3,7 @@ import ArtistEligible from "components/Modals/ArtistEligible";
 import ConnectWallet from "components/Modals/ConnectWallet";
 import SetFlowRate from "components/Modals/SetFlowRate";
 import { TEMP_SPOTIFY_TOKEN } from "constants/spotify";
-import { createNewFlow } from "helpers/superfluid";
+import { createNewFlow, deleteFlow } from "helpers/superfluid";
 import useUserContext from "hooks/useUserContext";
 import { useEffect, useRef, useState } from "react";
 import { getArtistWallet, getListenerRate } from "services/db";
@@ -12,6 +12,7 @@ import React from "react";
 import { Nav } from "components/Nav/Nav";
 import { WrongChain } from "components/Notices/WrongChain";
 import { Not8trac } from "components/Notices/Not8trac";
+import { Signer } from "ethers";
 
 declare global {
   interface Window {
@@ -58,6 +59,15 @@ export const SpotifyPlayer = () => {
   }, [validArtist, userDenied, wantsToStream, userAddress, rateSet]);
 
   useEffect(() => {
+    const tempPause = async () => {
+      await handleTogglePlay();
+    };
+    if (showValidArtistModal) {
+      tempPause();
+    }
+  }, [showValidArtistModal]);
+
+  useEffect(() => {
     const startFlow = async (id: string) => {
       const recipient = await getArtistWallet(id);
       const rate = await getListenerRate(userAddress);
@@ -100,14 +110,30 @@ export const SpotifyPlayer = () => {
       setValidArtist(!!wallet);
     };
 
+    const stopStream = async (
+      currentArtist: any,
+      newArtist: string,
+      signer: Signer
+    ) => {
+      console.log({ currentArtist, newArtist, signer });
+      const artistAddress = await getArtistWallet(currentArtist);
+      await deleteFlow(artistAddress, signer);
+      currentArtist = newArtist;
+      await checkArtistLinked(newArtist);
+    };
+
     if (artist) {
       const uriParts = artist.uri.split(":");
       const artistId = uriParts[2];
       if (artistId !== artistRef.current) {
         //artist changed
         resetValues();
-        artistRef.current = artistId;
-        checkArtistLinked(artistId);
+        if (showStartFlow) {
+          stopStream(artistRef.current, artistId, wagmi?.signer);
+        } else {
+          artistRef.current = artistId;
+          checkArtistLinked(artistId);
+        }
       }
     } else {
       resetValues();
