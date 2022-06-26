@@ -8,7 +8,7 @@ export const Wagmi: FC<WrapperProps> = ({ children }) => {
   }, []);
   return (
     <>
-      {isSSR && <Session />}
+      {!isSSR && <Session />}
       {children}
     </>
   );
