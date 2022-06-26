@@ -20,6 +20,7 @@ export const DropDownMenu = ({ address, disconnect }: MenuContainerProps) => {
   const { hasCopied, onCopy } = useClipboard(address);
   const { wagmi } = useUserContext();
   const userAddress = wagmi?.address;
+
   return (
     <Menu>
       <MenuButton

@@ -14,7 +14,7 @@ type SetFlowRateProps = {
 export const SetFlowRateForm = ({ userAddress }: SetFlowRateProps) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<FormData>({
-    flowRate: undefined,
+    flowRate: undefined
   });
 
   const handleOnSubmit = async (e: any) => {
@@ -49,7 +49,7 @@ export const SetFlowRateForm = ({ userAddress }: SetFlowRateProps) => {
           <Button
             mt={8}
             mb={8}
-            colorScheme="teal"
+            bgGradient="linear(to-r, #52BD13, #026e47)"
             isLoading={submitting}
             type="submit"
           >
