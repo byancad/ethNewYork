@@ -264,7 +264,11 @@ export const SpotifyPlayer = () => {
           {showConnectModal && <ConnectWallet />}
 
           {showSetFlowModal && (
-            <SetFlowRate chainID={wagmi?.chainID} userAddress={userAddress} />
+            <SetFlowRate
+              setRateSet={setRateSet}
+              chainID={wagmi?.chainID}
+              userAddress={userAddress}
+            />
           )}
         </Container>
       </div>

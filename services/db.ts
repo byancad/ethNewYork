@@ -8,7 +8,7 @@ export const getArtistWallet = async (artistId: string) => {
   return artists[`${artistId}`];
 };
 
-export const setListenerRate = async (address: string, rate: number) => {
+export const setListenerRate = async (address: string, rate: string) => {
   listeners[`${address}`] = rate;
 };
 

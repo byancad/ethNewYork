@@ -9,15 +9,19 @@ import {
 } from "@chakra-ui/react";
 import { SetFlowRateForm } from "components/Forms/SetFlowRate";
 import { SuggestedRate } from "constants/superFluid";
-import { useEffect } from "react";
-import { chain } from "wagmi";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 type SetFlowRateProps = {
   userAddress: string;
   chainID: number;
+  setRateSet: Dispatch<SetStateAction<boolean>>;
 };
 
-const SetFlowRate = ({ userAddress, chainID }: SetFlowRateProps) => {
+const SetFlowRate = ({
+  userAddress,
+  chainID,
+  setRateSet,
+}: SetFlowRateProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => onOpen(), []);
   const suggestedRate = SuggestedRate[chainID];
@@ -49,6 +53,7 @@ const SetFlowRate = ({ userAddress, chainID }: SetFlowRateProps) => {
             <SetFlowRateForm
               userAddress={userAddress}
               suggested={suggestedRate}
+              setRateSet={setRateSet}
             />
           </ModalBody>
         </ModalContent>

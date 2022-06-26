@@ -1,10 +1,10 @@
 type Mappings = { [key: number]: string };
 export const Providers: Mappings = {
-  4: "https://eth-rinkeby.alchemyapi.io/v2/02AlN5MMN2I6-tcAOgiapgnqfDh3E-zu",
+  4: "https://eth-rinkeby.alchemyapi.io/v2/eEIXghDPGnkdu47qmRRLP4eZzCkic57r",
   80001:
-    "https://polygon-mumbai.g.alchemy.com/v2/Uy3ASm5uYPmDK6fEt4P0Oeng6PlI12BB",
-  69: "https://opt-kovan.g.alchemy.com/v2/8GTc9l5Qu9E0E7IdHvi7qUN5Ei4oOxeT",
-  5: "https://discord.com/channels/@me/938455160353611846/990411403762499685",
+    "https://polygon-mumbai.g.alchemy.com/v2/rgHYYn5mu6VczK5MnJs1KlDsBBdvfXxH",
+  69: "https://opt-kovan.g.alchemy.com/v2/vdehzc2xCgs4Nb3OU0Xmyk5-cN0HArJO",
+  5: "https://eth-goerli.alchemyapi.io/v2/vquOZIRyqOKfUpCpVFwPbp4KTgU0jYJR",
 };
 
 export const Subgraphs: Mappings = {
@@ -17,7 +17,7 @@ export const Subgraphs: Mappings = {
 };
 
 export const Resolvers: Mappings = {
-  4: "0x659635Fab0A0cef1293f7eb3c7934542B6A6B31A ",
+  4: "0x659635Fab0A0cef1293f7eb3c7934542B6A6B31A",
   80001: "0x8C54C83FbDe3C59e59dd6E324531FB93d4F504d3",
   69: "0x851d3dd9dc97c1df1DA73467449B3893fc76D85B",
   5: "0x3710AB3fDE2B61736B8BB0CE845D6c61F667a78E",
