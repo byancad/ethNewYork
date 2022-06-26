@@ -153,7 +153,7 @@ export const SpotifyPlayer = () => {
           {trackWindow?.current_track.name}
           <br />
           {trackWindow?.current_track.artists[0].name}
-          <Box display="flex" alignItems="center" marginTop="10">
+          <Box display="flex" alignItems="center">
             <Button
               onClick={handlePrevious}
               disabled={!playerLoaded}
