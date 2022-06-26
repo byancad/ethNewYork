@@ -45,9 +45,8 @@ const SetFlowRate = ({
           <ModalCloseButton />
           <ModalBody>
             Sweet! You want to show your artist some love. Just gotta set a flow
-            rate and you're good to go. Flow rate a limit on how much you want
-            to spend per month supporting artists. Set a ceiling and start
-            flowing.
+            rate and youre good to go. Flow rate a limit on how much you want to
+            spend per month supporting artists. Set a ceiling and start flowing.
           </ModalBody>
           <ModalBody>
             <SetFlowRateForm

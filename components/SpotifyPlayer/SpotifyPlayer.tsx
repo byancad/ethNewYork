@@ -228,7 +228,7 @@ export const SpotifyPlayer = () => {
             <Alert status="success" height="50px" mb={6}>
               <AlertIcon />
               <AlertDescription>
-                Sick! Your currently streaming to this artist's wallet
+                Sick! Your currently streaming to this artists wallet
               </AlertDescription>
             </Alert>
           )}
