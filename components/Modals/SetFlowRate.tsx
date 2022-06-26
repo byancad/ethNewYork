@@ -8,15 +8,19 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { SetFlowRateForm } from "components/Forms/SetFlowRate";
+import { SuggestedRate } from "constants/superFluid";
 import { useEffect } from "react";
+import { chain } from "wagmi";
 
 type SetFlowRateProps = {
   userAddress: string;
+  chainID: number;
 };
 
-const SetFlowRate = ({ userAddress }: SetFlowRateProps) => {
+const SetFlowRate = ({ userAddress, chainID }: SetFlowRateProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => onOpen(), []);
+  const suggestedRate = SuggestedRate[chainID];
 
   return (
     <>
@@ -42,7 +46,10 @@ const SetFlowRate = ({ userAddress }: SetFlowRateProps) => {
             flowing.
           </ModalBody>
           <ModalBody>
-            <SetFlowRateForm userAddress={userAddress} />
+            <SetFlowRateForm
+              userAddress={userAddress}
+              suggested={suggestedRate}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>

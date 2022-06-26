@@ -1,40 +1,50 @@
 import { Framework } from "@superfluid-finance/sdk-core";
 import { customHttpProvider } from "configs/superfluid";
+import {
+  Networks,
+  Providers,
+  Resolvers,
+  Subgraphs,
+  Tokens,
+} from "constants/superFluid";
 import { Signer } from "ethers";
+import { Dispatch, SetStateAction } from "react";
 
 export const createNewFlow = async (
   recipient: string,
   flowRate: string,
-  signer: Signer
+  signer: Signer,
+  chainId: number,
+  setStreaming: Dispatch<SetStateAction<boolean>>
 ) => {
   const signerAddress = await signer.getAddress();
   const sf = await Framework.create({
-    chainId: 5,
-    provider: customHttpProvider,
-    customSubgraphQueriesEndpoint:
-      "https://thegraph.com/hosted-service/subgraph/superfluid-finance/protocol-v1-goerli",
-    resolverAddress: "0x3710AB3fDE2B61736B8BB0CE845D6c61F667a78E",
+    chainId: chainId,
+    provider: Providers[chainId],
+    customSubgraphQueriesEndpoint: Subgraphs[chainId],
+    resolverAddress: Resolvers[chainId],
   });
 
-  const ETHxContract = await sf.loadSuperToken("ETHx");
-  const ETHx = ETHxContract.address;
+  const tokenContract = await sf.loadSuperToken(Tokens[chainId]);
+  const tokenAddress = tokenContract.address;
   try {
     const createFlowOperation = sf.cfaV1.createFlow({
       flowRate: flowRate,
       receiver: recipient,
-      superToken: ETHx,
+      superToken: tokenAddress,
     });
     console.log("Creating your stream...");
     const tx = await createFlowOperation.exec(signer);
-    await tx.wait(3);
+    await tx.wait(1);
+    setStreaming(true);
 
     console.log(
       `Congrats - you've just created a money stream!
-    View Your Stream At: https://app.superfluid.finance/dashboard/${recipient}
-    Network: Goerli
-    Super Token: ETHx
+    View Your Stream At: https://app.superfluid.finance/dashboard/${signerAddress}
+    Network: ${Networks[chainId]}
+    Super Token: ${Tokens[chainId]}
     Sender: ${signerAddress}
-    Receiver: ${recipient},
+    Receiver: ${recipient}
     FlowRate: ${flowRate}
     `
     );
@@ -46,35 +56,40 @@ export const createNewFlow = async (
   }
 };
 
-export const deleteFlow = async (recipient: string, signer: Signer) => {
+export const deleteFlow = async (
+  recipient: string,
+  signer: Signer,
+  chainId: number,
+  setStreaming: Dispatch<SetStateAction<boolean>>
+) => {
   const signerAddress = await signer.getAddress();
   const sf = await Framework.create({
-    chainId: 5,
-    provider: customHttpProvider,
-    customSubgraphQueriesEndpoint:
-      "https://thegraph.com/hosted-service/subgraph/superfluid-finance/protocol-v1-goerli",
-    resolverAddress: "0x3710AB3fDE2B61736B8BB0CE845D6c61F667a78E",
+    chainId: chainId,
+    provider: Providers[chainId],
+    customSubgraphQueriesEndpoint: Subgraphs[chainId],
+    resolverAddress: Resolvers[chainId],
   });
 
-  const ETHxContract = await sf.loadSuperToken("ETHx");
-  const ETHx = ETHxContract.address;
+  const tokenContract = await sf.loadSuperToken(Tokens[chainId]);
+  const tokenAddress = tokenContract.address;
 
   try {
     const deleteFlowOperation = sf.cfaV1.deleteFlow({
       sender: signerAddress,
       receiver: recipient,
-      superToken: ETHx,
+      superToken: tokenAddress,
     });
 
     console.log("Deleting your stream...");
 
     const tx = await deleteFlowOperation.exec(signer);
-    await tx.wait(3);
+    await tx.wait(1);
+    setStreaming(false);
 
     console.log(
       `Congrats - you've just deleted your money stream!
-       Network: Kovan
-       Super Token: DAIx
+       Network: ${Networks[chainId]}
+       Super Token: ${Tokens[chainId]}
        Sender: ${signerAddress}
        Receiver: ${recipient}
     `
