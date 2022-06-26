@@ -17,9 +17,6 @@ export const Session = () => {
   const { activeChain } = useNetwork();
   const { data: signer } = useSigner();
   const { setWagmiUser, clearWagmiUser } = useUserContext();
-  console.log(activeChain);
-
-  console.log({ signer });
 
   const handleDisconnect = () => {
     clearWagmiUser();

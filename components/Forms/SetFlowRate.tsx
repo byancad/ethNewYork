@@ -1,32 +1,37 @@
 import { Button, Center, Input } from "@chakra-ui/react";
 import { Signer } from "ethers";
 import useUserContext from "hooks/useUserContext";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { getListenerRate, setListenerRate } from "services/db";
 
 type FormData = {
-  flowRate: number | undefined;
+  flowRate: string | undefined;
 };
 
 type SetFlowRateProps = {
   userAddress: string;
   suggested: string;
+  setRateSet: Dispatch<SetStateAction<boolean>>;
 };
 
 export const SetFlowRateForm = ({
   userAddress,
   suggested,
+  setRateSet,
 }: SetFlowRateProps) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<FormData>({
-    flowRate: undefined
+    flowRate: undefined,
   });
 
   const handleOnSubmit = async (e: any) => {
     e.preventDefault();
     setSubmitting(true);
     const { flowRate } = formValues;
-    if (userAddress) {
-      //   await saveFlowRate(flowRate, userAddress);
+    if (userAddress && flowRate) {
+      await setListenerRate(userAddress, flowRate);
+      const rate = await getListenerRate(userAddress);
+      setRateSet(!!rate);
     } else {
       console.log("sign in foo !");
     }

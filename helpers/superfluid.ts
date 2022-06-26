@@ -7,7 +7,7 @@ import {
   Subgraphs,
   Tokens,
 } from "constants/superFluid";
-import { Signer } from "ethers";
+import { ethers, Signer } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 
 export const createNewFlow = async (
@@ -18,9 +18,11 @@ export const createNewFlow = async (
   setStreaming: Dispatch<SetStateAction<boolean>>
 ) => {
   const signerAddress = await signer.getAddress();
+  const provider = new ethers.providers.JsonRpcProvider(Providers[chainId]);
+
   const sf = await Framework.create({
     chainId: chainId,
-    provider: Providers[chainId],
+    provider: provider,
     customSubgraphQueriesEndpoint: Subgraphs[chainId],
     resolverAddress: Resolvers[chainId],
   });
@@ -63,9 +65,11 @@ export const deleteFlow = async (
   setStreaming: Dispatch<SetStateAction<boolean>>
 ) => {
   const signerAddress = await signer.getAddress();
+  const provider = new ethers.providers.JsonRpcProvider(Providers[chainId]);
+
   const sf = await Framework.create({
     chainId: chainId,
-    provider: Providers[chainId],
+    provider: provider,
     customSubgraphQueriesEndpoint: Subgraphs[chainId],
     resolverAddress: Resolvers[chainId],
   });
