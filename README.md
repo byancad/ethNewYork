@@ -1,35 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 8trac
+## A music and money streaming platform. 
+Spotify artists can link their crypto wallets to allow fans to directly stream them crypto. As a fan listening to their favorite artist, they can choose their own rate at which to directly stream crypto to their favorite artist (platform takes no cut). This allows a deeper connection between artists and fans and helps the artist make a living off of their art. 
 
-## Getting Started
+## Features
+- If your music is already on Spotify, you are ready to go. No need to move your music catalog to a new platform. 
+- 100% opt in for both artists and fans. 
+- Artists just need to link a crypto wallet to start receiving tips.
+- Fans name their price. Choose how much you would like to contribute to your favorite artists!
+- Start / Stop tipping at any time
 
-First, run the development server:
+## Under the hood
+- Spotify SDK to allow playback from artists already on Spotify. No need to migrate your music to a new platform! 
+- Superfluid protocol to allow real time streaming of crypto 
+- NextJs / Typescript   
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Video demo
+https://www.youtube.com/watch?v=ulzKvMPkBTQ&t=2s
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<img width="1405" alt="image" src="https://user-images.githubusercontent.com/31261908/202954254-58e06210-04da-42b1-8a81-40ac3f49f409.png">
+<img width="1470" alt="image" src="https://user-images.githubusercontent.com/31261908/202954352-7b142e3f-6bf1-442d-b510-ed29f872e7cd.png">
+<img width="1465" alt="image" src="https://user-images.githubusercontent.com/31261908/202954424-2db61749-8139-4d0d-8ada-ccbf5e7b560e.png">
+<img width="1465" alt="image" src="https://user-images.githubusercontent.com/31261908/202954520-bac790a6-1c8a-44c9-a6c1-6e0e7c1e85de.png">
+<img width="1485" alt="image" src="https://user-images.githubusercontent.com/31261908/202954601-2627bfde-a27a-4ee0-80e6-680ed376956b.png">
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# ethNewYork
